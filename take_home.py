@@ -2,15 +2,16 @@ import pandas as pd
 import requests
 import mysql.connector
 from sqlalchemy import create_engine
+import credentials
 #Define API Parameters
-email = 'sfdcshared@gmail.com'
-password = 'InNn8li^AY27CRa8'
+email = credentials.email()
+password = credentials.password()
 
-client_id = '3MVG9ux34Ig8G5epaMPqbA1E25OpLuKGuGcWZixMzgV6myFvvKoIQnGrMY5mg9pTNHPBWj9GgJNuwD0TAIEIy'
-client_secret = '50D529BA45FA479E8FE492C5BC5CBE774452FF21597B1ED8D73352105428F3FC'
+client_id = credentials.client_id()
+client_secret = credentials.client_secret()
 
-request_token_url = "https://login.salesforce.com/services/oauth2/token"
-api_two_circles= 'http://koresoftware-dev-ed.develop.my.salesforce.com'
+request_token_url = credentials.request_token_url()
+api_two_circles= credentials.api_two_circles()
 
 request_json = {
     'grant_type': 'password',
@@ -21,14 +22,14 @@ request_json = {
 }
 
 #Define MYSQL Parameters for source
-host_source ='kinterview-db.cluster-cnawrkmxrmmc.us-west-2.rds.amazonaws.com'
-userid_source ='adventureworks_madhu_user'
-password_source ='v4#%W007Cl'
+host_source = credentials.host_source()
+userid_source = credentials.userid_source()
+password_source = credentials.password_source()
 
 #Define MYSQL Parameters for target
-host_target ='kinterview-db.cluster-cnawrkmxrmmc.us-west-2.rds.amazonaws.com'
-userid_target ='dw_madhu_user'
-password_target ='v4#%W007Cl'
+host_target = credentials.host_target()
+userid_target = credentials.userid_target()
+password_target = credentials.password_target()
 target_port = 3306
 target_database = 'dw_madhu'
 
@@ -77,9 +78,9 @@ def transform_json():
 #Process the MYSQL Tables
 def mysql_connection_source():
     db = mysql.connector.connect(
-        host= host_source,
-        user= userid_source,
-        password= password_source 
+        host = host_source,
+        user = userid_source,
+        password = password_source 
     )
     cur = db.cursor()
     cur.execute("use adventureworks")
